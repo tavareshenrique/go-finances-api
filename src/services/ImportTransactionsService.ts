@@ -1,59 +1,52 @@
-import { getCustomRepository } from 'typeorm';
-
-import csv from 'csv-parse';
+import csv from 'csvtojson';
+import path from 'path';
 import fs from 'fs';
 
 import uploadConfig from '../config/upload';
 
-import CreateCategoryService from './CreateCategoryService';
-
-import AppError from '../errors/AppError';
-
-import TransactionsRepository from '../repositories/TransactionsRepository';
 import Transaction from '../models/Transaction';
 
-interface TransactionDTO {
-  total: number;
+import CreateTransactionService from './CreateTransactionService';
+import CreateCategoryService from './CreateCategoryService';
+
+interface Request {
+  filename: string;
 }
 
 class ImportTransactionsService {
-  async execute(filename: string): Promise<object[]> {
-    const csvItens: string[] = [];
-    const allCsvItens: object[] = [];
+  async execute({ filename }: Request): Promise<Transaction[]> {
+    const createTransactionService = new CreateTransactionService();
+    const createCategoryService = new CreateCategoryService();
 
-    const createCategory = new CreateCategoryService();
-    const transactionRepository = getCustomRepository(TransactionsRepository);
+    const filePath = path.join(uploadConfig.directory, filename);
 
-    fs.createReadStream(`${uploadConfig.directory}/${filename}`)
-      .pipe(csv())
-      .on('data', data => csvItens.push(data))
-      .on('end', async () => {
-        for (let i = 1; i < csvItens.length; i += 1) {
-          const title = csvItens[i][0].replace(/\s/g, '');
-          const type = csvItens[i][1].replace(/\s/g, '');
-          const value = parseInt(csvItens[i][2].replace(/\s/g, ''), 0);
-          const category = csvItens[i][3].replace(/\s/g, '');
+    const csvfile = await csv().fromFile(filePath);
 
-          const category_id = (await createCategory.execute({
-            title: category,
-          })) as string;
+    await fs.promises.unlink(filePath);
 
-          const obj = {
-            title,
-            value,
-            type,
-            category_id,
-          };
+    const transactions: Transaction[] = [];
 
-          allCsvItens.push(obj);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of csvfile) {
+      const { title, type, value, category } = item;
 
-          const transaction = transactionRepository.create(obj);
-
-          await transactionRepository.save(transaction);
-        }
-
-        return allCsvItens;
+      // eslint-disable-next-line no-await-in-loop
+      const { title: categoryTitle } = await createCategoryService.execute({
+        title: category,
       });
+
+      // eslint-disable-next-line no-await-in-loop
+      const transaction = await createTransactionService.execute({
+        title,
+        type,
+        value: Number.parseFloat(value),
+        category: categoryTitle,
+      });
+
+      transactions.push(transaction);
+    }
+
+    return transactions;
   }
 }
 

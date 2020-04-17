@@ -39,7 +39,9 @@ class CreateTransactionService {
       }
     }
 
-    const category_id = await createCategory.execute({ title: category });
+    const { id: category_id } = await createCategory.execute({
+      title: category,
+    });
 
     const transaction = transactionRepository.create({
       title,

@@ -14,7 +14,7 @@ interface CategoryDTO {
 }
 
 class CreateTransactionService {
-  public async execute({ title }: Request): Promise<string> {
+  public async execute({ title }: Request): Promise<CategoryDTO> {
     const categoryRepository = getRepository(Category);
 
     const categoryExists = await categoryRepository.findOne({
@@ -22,9 +22,9 @@ class CreateTransactionService {
     });
 
     if (categoryExists) {
-      const { id } = (categoryExists as unknown) as CategoryDTO;
+      const category = (categoryExists as unknown) as CategoryDTO;
 
-      return id;
+      return category;
     }
 
     const category = categoryRepository.create({
@@ -33,7 +33,7 @@ class CreateTransactionService {
 
     await categoryRepository.save(category);
 
-    return category.id;
+    return category;
   }
 }
 
