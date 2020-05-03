@@ -4,7 +4,7 @@
 
 <p align="center">
   <img alt="Last commit on GitHub" src="https://img.shields.io/github/last-commit/tavareshenrique/go-finances-api?color=7D40E7">
-  <img alt="Made by Henrique Tavares" src="https://img.shields.io/badge/made%20by-Henrique Tavares-%20?color=7D40E7">
+  <img alt="Made by Rocketseat" src="https://img.shields.io/badge/made%20by-Henrique Tavares-%20?color=7D40E7">
   <img alt="Project top programing language" src="https://img.shields.io/github/languages/top/tavareshenrique/go-finances-api?color=7D40E7">
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/tavareshenrique/go-finances-api?color=7D40E7">
   <img alt="GitHub license" src="https://img.shields.io/github/license/tavareshenrique/go-finances-api?color=7D40E7">
