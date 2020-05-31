@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="#information_source-content">⚙️ Start</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#information_source-content">ℹ️ Content</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#rocket-technologies">🚀 Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#computer-author">💻 Author</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -22,6 +23,21 @@
 <p align="center">
   GoFinances is a simple financial control project developed during Rocketseat's GoStack 11. Its API is built using TypeORM and TypeScript.
 </p>
+
+---
+
+# :gear: Start
+
+```shell
+# Clone o Repositório
+git@github.com:tavareshenrique/go-finances-api.git
+
+## Baixe as dependencias
+yarn
+
+# Inicie o Projeto
+yarn dev:server
+```
 
 ---
 
